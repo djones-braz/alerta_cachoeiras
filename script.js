@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Mapa iniciado. Carregando dados da planilha...");
 
-    // --- URL CORRIGIDA ---
-    // Esta é a URL correta e limpa, sem a duplicação do erro anterior.
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDTtaJJh_GXdGQCZdBXc9YjvDuvJGDcuU3T0XVkR8-knVRiTKIGYc7dD3TSC2cgyj5DF_tLR5wBBW1/pub?gid=415255226&single=true&output=csv';
-    
-    // Adiciona um parâmetro para evitar que o navegador use uma versão antiga (cache)
     const urlComCacheBuster = `${sheetUrl}&t=${new Date().getTime()}`;
 
     const map = L.map('map').setView([-22.4640, -42.6534], 13);
@@ -14,11 +10,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }).addTo(map);
 
     async function geocodeAddress(address) {
-        const cleanAddress = address.trim();
-        // Usamos o parâmetro "countrycodes=br" para focar a busca no Brasil
-        const geoUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cleanAddress)}&countrycodes=br`;
+        // --- A SOLUÇÃO DEFINITIVA ESTÁ AQUI ---
+        // Se o endereço tiver 4 partes (Rua, Número, Bairro, Cidade),
+        // nós o reconstruímos sem o bairro para uma busca precisa.
+        const parts = address.trim().split(',');
+        let addressForSearch = address.trim(); // Por padrão, usa o endereço original
+
+        if (parts.length === 4) {
+            // Reconstrói o endereço pegando a Rua (parte 0), o Número (parte 1) e a Cidade (parte 3)
+            addressForSearch = `${parts[0].trim()}, ${parts[1].trim()}, ${parts[3].trim()}`;
+        }
+
+        const geoUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressForSearch)}&countrycodes=br`;
         
-        console.log(`Buscando coordenadas para: "${cleanAddress}" (limitado ao Brasil)`);
+        console.log(`Enviando endereço LIMPO para busca: "${addressForSearch}"`);
 
         try {
             const response = await fetch(geoUrl);
@@ -26,14 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (geoData && geoData.length > 0) {
                 const coords = { lat: parseFloat(geoData[0].lat), lon: parseFloat(geoData[0].lon) };
-                console.log(`%cSUCESSO! Coordenadas encontradas: Lat ${coords.lat}, Lon ${coords.lon}`, "color: green; font-weight: bold;");
+                console.log(`%cSUCESSO! Coordenadas encontradas para "${address}": Lat ${coords.lat}, Lon ${coords.lon}`, "color: green; font-weight: bold;");
                 return coords;
             } else {
-                console.warn(`AVISO: Nenhum resultado encontrado para o endereço: "${cleanAddress}"`);
+                console.warn(`AVISO: Nenhum resultado encontrado para o endereço: "${addressForSearch}"`);
                 return null;
             }
         } catch (error) {
-            console.error(`ERRO ao tentar buscar o endereço '${cleanAddress}':`, error);
+            console.error(`ERRO ao buscar o endereço '${addressForSearch}':`, error);
             return null;
         }
     }
@@ -47,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function() {
             let locationsFound = 0;
 
             for (const item of data) {
-                // Certifique-se de que o nome da coluna aqui está EXATAMENTE igual ao da sua planilha
                 const address = item["Logradouro da Ocorrência"]; 
                 if (address) {
                     const coords = await geocodeAddress(address);
@@ -65,12 +69,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             if (locationsFound === 0 && data.length > 0) {
-                alert("Planilha carregada, mas nenhum endereço pôde ser convertido em coordenadas. Verifique o formato dos endereços na planilha.");
+                alert("Planilha carregada, mas nenhum endereço pôde ser convertido em coordenadas.");
             }
         },
-        error: function(error, file) {
-            console.error('Erro ao carregar ou processar o CSV:', error, file);
-            alert(`Erro grave ao carregar a planilha. Verifique o console (F12) para detalhes.`);
+        error: function(error) {
+            console.error('Erro ao carregar o CSV:', error);
+            alert(`Erro grave ao carregar a planilha.`);
         }
     });
 });
