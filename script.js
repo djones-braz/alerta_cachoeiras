@@ -1,7 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Mapa iniciado. Carregando dados da planilha...");
 
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDTtaJJh_GXdGQCZdBXc9YjvDuvJGDcuU3T0XVkR8-knVRiTKIGYc7dD3TSC2cgyj5DF_tLR5wBBW1/pub?gid=415255-knVRiTKIGYc7dD3TSC2cgyj5DF_tLR5wBBW1/pub?gid=415255226&single=true&output=csv';
+    // --- URL CORRIGIDA ---
+    // Esta é a URL correta e limpa, sem a duplicação do erro anterior.
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDTtaJJh_GXdGQCZdBXc9YjvDuvJGDcuU3T0XVkR8-knVRiTKIGYc7dD3TSC2cgyj5DF_tLR5wBBW1/pub?gid=415255226&single=true&output=csv';
+    
+    // Adiciona um parâmetro para evitar que o navegador use uma versão antiga (cache)
     const urlComCacheBuster = `${sheetUrl}&t=${new Date().getTime()}`;
 
     const map = L.map('map').setView([-22.4640, -42.6534], 13);
@@ -11,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function geocodeAddress(address) {
         const cleanAddress = address.trim();
-        // CORREÇÃO FINAL: Usamos o parâmetro "countrycodes=br" para focar a busca no Brasil
+        // Usamos o parâmetro "countrycodes=br" para focar a busca no Brasil
         const geoUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cleanAddress)}&countrycodes=br`;
         
         console.log(`Buscando coordenadas para: "${cleanAddress}" (limitado ao Brasil)`);
@@ -43,7 +47,8 @@ document.addEventListener("DOMContentLoaded", function() {
             let locationsFound = 0;
 
             for (const item of data) {
-                const address = item["Logradouro da Ocorrência"];
+                // Certifique-se de que o nome da coluna aqui está EXATAMENTE igual ao da sua planilha
+                const address = item["Logradouro da Ocorrência"]; 
                 if (address) {
                     const coords = await geocodeAddress(address);
                     if (coords) {
@@ -63,9 +68,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert("Planilha carregada, mas nenhum endereço pôde ser convertido em coordenadas. Verifique o formato dos endereços na planilha.");
             }
         },
-        error: function(error) {
-            console.error('Erro ao carregar/processar o CSV:', error);
-            alert(`Erro grave ao carregar a planilha. Detalhe: ${error.message}`);
+        error: function(error, file) {
+            console.error('Erro ao carregar ou processar o CSV:', error, file);
+            alert(`Erro grave ao carregar a planilha. Verifique o console (F12) para detalhes.`);
         }
     });
 });
