@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                         popupContent += `<b>Coordenadas Encontradas:</b> ${coords.lat.toFixed(5)}, ${coords.lon.toFixed(5)}<br>`;
                         
-                        // --- CORREÇÃO FINAL E VERIFICADA ---
-                        // A sintaxe correta e atual é 'mapStyle=mapbox_satellite'.
-                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=mapbox_satellite`;
+                        // --- CORREÇÃO FINAL BASEADA NA SUA IMAGEM ---
+                        // O nome correto, como visto no menu, é 'esri_satellite'.
+                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=esri_satellite`;
                         popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem da rua (Satélite)</a>`;
                         
                         marker.bindPopup(popupContent);
