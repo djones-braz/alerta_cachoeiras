@@ -52,4 +52,23 @@ h1 {
 
 .leaflet-popup-tip-container {
     display: none;
+
+}
+
+/* Adicione este código ao final do seu style.css */
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.back-button:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
