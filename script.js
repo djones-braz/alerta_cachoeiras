@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("Mapa iniciado. Carregando dados da planilha...");
+
     // URL de publicação direta da sua planilha
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRDTtaJJh_GXdGQCZdBXc9YjvDuvJGDcuU3T0XVkR8-knVRiTKIGYc7dD3TSC2cgyj5DF_tLR5wBBW1/pub?gid=415255226&single=true&output=csv';
     const urlComCacheBuster = `${sheetUrl}&t=${new Date().getTime()}`;
 
-    // Centraliza o mapa na sua cidade
     const map = L.map('map').setView([-22.4640, -42.6534], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -13,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     async function geocodeAddress(address) {
-        // Lógica de limpeza de endereço que já funcionou antes
         const parts = address.trim().split(',');
         let addressForSearch = address.trim();
         if (parts.length === 4) {
@@ -49,15 +49,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (coords) {
                         locationsFound++;
                         const marker = L.marker([coords.lat, coords.lon]).addTo(map);
+                        
                         let popupContent = '';
                         for (const key in item) {
                             popupContent += `<b>${key}:</b> ${item[key]}<br>`;
                         }
-                        popupContent += `<b>Coordenadas Encontradas:</b> ${coords.lat.toFixed(5)}, ${coords.lon.toFixed(5)}`;
+                        popupContent += `<b>Coordenadas Encontradas:</b> ${coords.lat.toFixed(5)}, ${coords.lon.toFixed(5)}<br>`;
+                        
+                        // --- AQUI ESTÁ A ÚNICA MUDANÇA ---
+                        // Adiciona um link estilizado para o Mapillary no final do popup
+                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17`;
+                        popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem da rua (Mapillary)</a>`;
+                        
                         marker.bindPopup(popupContent);
                     }
                     
-                    // A CORREÇÃO: Pausa de 1 segundo para respeitar o limite de uso da API
+                    // Pausa de 1 segundo para respeitar o limite de uso da API
                     await delay(1000); 
                 }
             }
