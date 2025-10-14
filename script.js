@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         // --- CORREÇÃO FINAL BASEADA NA SUA IMAGEM ---
                         // O nome correto, como visto no menu, é 'esri_satellite'.
-                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=esri_satellite`;
+                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=Esri+satellite`;
                         popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem da rua (Satélite)</a>`;
                         
                         marker.bindPopup(popupContent);
@@ -79,3 +79,4 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
