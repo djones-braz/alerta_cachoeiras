@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                         popupContent += `<b>Coordenadas Encontradas:</b> ${coords.lat.toFixed(5)}, ${coords.lon.toFixed(5)}<br>`;
                         
-                        // --- ALTERAÇÃO PARA ABRIR O MAPA SATÉLITE ---
-                        // Adicionamos o parâmetro "&mapStyle=esri_satellite" ao final da URL.
-                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=esri_satellite`;
+                        // --- CORREÇÃO FINAL ---
+                        // Trocamos 'esri_satellite' pelo nome padrão 'satellite'.
+                        const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17&mapStyle=satellite`;
                         popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem da rua (Satélite)</a>`;
                         
                         marker.bindPopup(popupContent);
