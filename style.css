@@ -72,3 +72,21 @@ h1 {
     background-color: #e0e0e0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+/* Adicione este código ao final do seu style.css */
+.mapillary-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #39a859; /* Verde do Mapillary */
+    color: white !important; /* Força a cor do texto para branco */
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
+.mapillary-link:hover {
+    background-color: #2e8647; /* Tom mais escuro ao passar o mouse */
+}
