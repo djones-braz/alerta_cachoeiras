@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         // --- AQUI ESTÁ A ÚNICA MUDANÇA ---
                         // Adiciona um link estilizado para o Mapillary no final do popup
                         const mapillaryUrl = `https://www.mapillary.com/app/?lat=${coords.lat}&lng=${coords.lon}&z=17`;
-                        popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem da rua (Mapillary)</a>`;
+                        popupContent += `<br><a href="${mapillaryUrl}" target="_blank" class="mapillary-link">Ver imagem referente ao local de (Lat e Lon da ocorrência)</a>`;
                         
                         marker.bindPopup(popupContent);
                     }
@@ -79,3 +79,4 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
