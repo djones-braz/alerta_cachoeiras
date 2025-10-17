@@ -11,13 +11,32 @@
     <div class="container">
         <h1>Mapa de Ocorrências</h1>
         <a href="index.html" class="back-button">← Voltar para o formulário</a>
-    </br>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label for="filtro-mes">Mês:</label>
+                <select id="filtro-mes">
+                    <option value="todos">Todos os Meses</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filtro-ano">Ano:</label>
+                <select id="filtro-ano">
+                    <option value="todos">Todos os Anos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filtro-tipo">Tipo:</label>
+                <select id="filtro-tipo">
+                    <option value="todos">Todos os Tipos</option>
+                </select>
+            </div>
+        </div>
+
         <div id="map"></div>
     </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
-
